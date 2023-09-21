@@ -1,0 +1,14 @@
+{
+  "extends": "@quasar/app-webpack/tsconfig-preset",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "noImplicitAny": false,
+    "strictFunctionTypes": false,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+  },
+  "typeCheck": {
+    "memoryLimit": 2048,
+   }
+}
