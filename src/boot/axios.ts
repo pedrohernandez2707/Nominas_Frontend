@@ -125,10 +125,13 @@ function configApi(
 
 
 enum endPoints {
-  EMPRESAS  = 'api/empresas',
-  LOGIN     = 'api/login',
-  USUARIOS  = 'api/usuarios',
-  EMPLEADOS = 'api/empleados'
+  EMPRESAS   = 'api/empresas',
+  LOGIN      = 'api/login',
+  USUARIOS   = 'api/usuarios',
+  EMPLEADOS  = 'api/empleados',
+  PRODUCTOS  = 'api/productos',
+  COMPRA_ENC = 'api/compraEnc',
+  COMPRA_DET = 'api/compraDet',
 }
 
 export { api, urlFront, endPoints, wsURL, configApi };
