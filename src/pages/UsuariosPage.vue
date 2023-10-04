@@ -59,22 +59,31 @@
         :pagination="{ rowsPerPage: 0 }"
         @row-click="selectUsuario"
       >
-      <template v-slot:top-right>
-              <q-input
-                for="pos-buscar-detalles"
-                borderless dense v-model="filter" placeholder="Buscar Usuarios" clearable>
-                <template v-slot:append>
-                  <q-icon name="search" />
-                </template>
-              </q-input>
+        <template v-slot:top-right>
+          <q-input
+            for="pos-buscar-detalles"
+            borderless dense v-model="filter" placeholder="Buscar Usuarios" clearable>
+            <template v-slot:append>
+              <q-icon name="search" />
             </template>
+          </q-input>
+        </template>
+        <template v-slot:top-left>
+        <q-btn
+          color="primary"
+          icon-right="archive"
+          label="Export to csv"
+          @click="exportTable"
+          no-caps
+        />
+      </template>
       </q-table>
     </div>
   </q-page>
 </template>
 
 <script lang="ts">
-import { QTableProps, useQuasar } from 'quasar';
+import { exportFile, QTableProps, useQuasar } from 'quasar';
 import { api, endPoints } from 'src/boot/axios';
 import { showErrorEx, showSucces } from 'src/helpers/showAlerts';
 import { defineComponent, ref } from 'vue';
@@ -137,6 +146,53 @@ export default defineComponent({
     const filter = ref('');
 
     const usuarios = ref<any[]>([]);
+
+    const  wrapCsvValue = (val, formatFn, row) =>{
+      let formatted = formatFn !== void 0
+        ? formatFn(val, row)
+        : val
+
+      formatted = formatted === void 0 || formatted === null
+        ? ''
+        : String(formatted)
+
+      formatted = formatted.split('"').join('""')
+      /**
+       * Excel accepts \n and \r in strings, but some other CSV parsers do not
+       * Uncomment the next two lines to escape new lines
+       */
+      // .split('\n').join('\\n')
+      // .split('\r').join('\\r')
+
+      return `"${formatted}"`
+    }
+
+    const exportTable  = () =>{
+        // naive encoding to csv format
+        const content = [columns.map(col => wrapCsvValue(col.label, undefined, undefined))].concat(
+          usuarios.value.map(row => columns.map(col => wrapCsvValue(
+            typeof col.field === 'function'
+              ? col.field(row)
+              : row[ col.field === void 0 ? col.name : col.field ],
+            col.format,
+            row
+          )).join(','))
+        ).join('\r\n')
+
+        const status = exportFile(
+          'table-export.csv',
+          content,
+          'text/csv'
+        )
+
+        if (status !== true) {
+          $q.notify({
+            message: 'Browser denied file download...',
+            color: 'negative',
+            icon: 'warning'
+          })
+        }
+      }
 
     const getUsuarios = async()=>{
 
@@ -273,7 +329,8 @@ export default defineComponent({
       email,
       //bodegas,
       //bodega,
-      filter
+      filter,
+      exportTable
     }
   },
   created(){

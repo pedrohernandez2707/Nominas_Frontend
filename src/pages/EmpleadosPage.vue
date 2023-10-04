@@ -8,80 +8,115 @@
     >
       <div class="row">
 
-        <div class="col-xs-2 col-md-2">
+        <div class="col-xs-2 col-md-2 q-pr-md">
           <q-input v-model="codigo" type="number" label="Código" disable/>
         </div>
 
-        <div class="col-xs-4 col-md-3">
+        <div class="col-xs-4 col-md-3 q-pr-md">
           <q-input v-model="nombre" type="text" label="Nombre"
             
             :rules="[ val => val.length <= 40 || 'El nombre no puede ser mayor a 40 caracteres']"
           />
         </div>
         
-        <div class="col-xs-4 col-md-3">
+        <div class="col-xs-4 col-md-3 q-pr-md">
           <q-input v-model="apellido" type="text" label="Apellido"
             
             :rules="[ val => val.length <= 40 || 'El nombre no puede ser mayor a 40 caracteres']"
           />
         </div>
 
-         <div class="col-xs-3 col-md-3">
+         <div class="col-xs-3 col-md-3 q-pr-md">
           <q-input v-model="telefono" type="text" label="Telefono"
             
             :rules="[ val => val.length <= 40 || 'El nombre no puede ser mayor a 40 caracteres']"
           />
         </div>
 
-           <div class="col-xs-3 col-md-3">
+           <div class="col-xs-3 col-md-3 q-pr-md">
           <q-input v-model="direccion" type="text" label="Direccion"
             
             :rules="[ val => val.length <= 40 || 'El nombre no puede ser mayor a 40 caracteres']"
           />
         </div>
 
-           <div class="col-xs-3 col-md-3">
+           <div class="col-xs-3 col-md-3 q-pr-md">
           <q-input v-model="dpi" type="text" label="dpi"
             
             :rules="[ val => val.length <= 40 || 'El nombre no puede ser mayor a 40 caracteres']"
           />
         </div>
 
-           <div class="col-xs-3 col-md-3">
+           <div class="col-xs-3 col-md-3 q-pr-md">
           <q-input v-model="igss" type="text" label="afiliacion IGGS"
             
             :rules="[ val => val.length <= 40 || 'El nombre no puede ser mayor a 40 caracteres']"
           />
         </div>
 
-        <div class="col-xs-4 col-sm-2 col-md-2">
+        <div class="col-xs-4 col-sm-2 col-md-2 q-pr-md">
           <q-toggle v-model="estado" color="green" label="Estado" left-label />
         </div>
 
-        <div class="col-xs-4 col-sm-2 col-md-2">
+        <div class="col-xs-4 col-sm-2 col-md-2 q-pr-md" >
             <q-input v-model="fechaNac" filled type="date" label="Fecha Nacimiento" />
         </div>
 
-        <div class="col-xs-4 col-sm-2 col-md-2">
+        <div class="col-xs-4 col-sm-2 col-md-2 q-pr-md">
             <q-input v-model="fechaInicio" filled type="date" label="Fecha Contratacion" />
         </div>
 
-        <div class="col-xs-4 col-sm-2 col-md-2">
+        <div class="col-xs-4 col-sm-2 col-md-2 q-pr-md">
             <q-input v-model="fechaFin" filled type="date" hint="Fecha Fin / Baja" />
         </div>
       <!-- </div> -->
       <!-- <div class="row"> -->
-        <q-select class="col-xs-12 col-sm-2" v-model="estadoCivil" :options="estadosCiviles" label="Rol / Permiso" filled />
+        <q-select class="col-xs-12 col-sm-2 q-pr-md" v-model="estadoCivil" :options="estadosCiviles" label="Rol / Permiso" filled />
          
-        <q-input class="q-pa-xs col-sm-4" v-model="email" type="email" label="Email"
+        <q-input class="q-pa-xs col-sm-4 q-pr-md" v-model="email" type="email" label="Email"
           counter
         />
+
+        <q-file color="teal" filled v-model="photoModel" label="Subir Fotografia" accept=".jpg, .jpeg, .png, .bmp, .webp">
+          <template v-slot:prepend>
+            <q-icon name="cloud_upload"/>
+          </template>
+
+          <template v-slot:after>
+            <q-btn round dense flat icon="send" @click="subirImagen"/>
+          </template>
+
+        </q-file>
+
+        <div class="q-pa-md q-gutter-sm">
+
+          <famModal v-if="codigo" :Empleado_ID="codigo" :Empleado_Name="nombre"></famModal>
+          <docModal v-if="codigo" :Empleado_ID="codigo" :Empleado_Name="nombre"></docModal>
+
+        </div>
+
       </div>
       <div>
         <q-btn :label=" codigo === null ? 'Guardar' : 'Actualizar'" type="submit" color="primary"/>
         <q-btn label="Limpiar" type="reset" color="primary" flat class="q-ml-sm" />
       </div>
     </q-form>
+
+     <div>
+        <q-img
+          v-if="Photo_Url"
+          :src="Photo_Url"
+          alt="Fotografia de Empleado"
+          style="max-width: 150px; height: 150px;"
+          fit="fill"
+        >
+          <q-icon class="absolute all-pointer-events" size="20px" name="info" color="white" style="top: 8px; left: 8px" @click="abrirPestaña">
+            <q-tooltip >
+              Abrir en nueva pestaña
+            </q-tooltip>
+          </q-icon>
+        </q-img>
+      </div>
 
     <div style="height: 500px;">
       <q-table
@@ -93,25 +128,33 @@
         :pagination="{ rowsPerPage: 0 }"
         @row-click="selectUsuario"
       >
-      <template v-slot:top-right>
-              <q-input
-                for="pos-buscar-detalles"
-                borderless dense v-model="filter" placeholder="Buscar Usuarios" clearable>
-                <template v-slot:append>
-                  <q-icon name="search" />
-                </template>
-              </q-input>
+        <template v-slot:top-right>
+          <q-input
+            for="pos-buscar-detalles"
+            borderless dense v-model="filter" placeholder="Buscar Usuarios" clearable>
+            <template v-slot:append>
+              <q-icon name="search" />
             </template>
+          </q-input>
+        </template>
+        
       </q-table>
     </div>
   </q-page>
+
+
 </template>
 
+
+
 <script lang="ts">
+
 import { QTableProps, useQuasar, date } from 'quasar';
 import { api, endPoints } from 'src/boot/axios';
-import { showErrorEx, showSucces } from 'src/helpers/showAlerts';
+import { showAlertAsync, showError, showErrorEx, showSucces } from 'src/helpers/showAlerts';
 import { defineComponent, ref } from 'vue';
+import famModal from '../components/familiaresModal.vue'
+import docModal from '../components/documentosModal.vue'
 
 
 const columns:QTableProps['columns']=[
@@ -148,17 +191,28 @@ const columns:QTableProps['columns']=[
   {
     name: 'Estado',
     label:'Estado',
-    field:'estado2',
+    field:'estado',
     align: 'center'
   },
 ]
 
 export default defineComponent({
   name: 'UsuariosPage',
+
+  components:{
+    famModal,
+    docModal
+  },
+
+  methods:{
+
+    
+  },
+
   setup(){
 
     const $q = useQuasar()
-
+    const Photo_Url = ref('')
     const codigo=ref<number|null>(null);
     const nombre=ref<string|null>(null);
     const fechaNac=ref<string|null>(null);
@@ -174,10 +228,71 @@ export default defineComponent({
     const pass=ref('');
     const estadosCiviles=ref(['Soltero','Casado','Viudo','Divorciado','Unido']);
     const estadoCivil=ref('Soltero');
-
+    const photoModel = ref<any>(null)
     const filter = ref('');
-
     const empleados = ref<any[]>([]);
+
+    let showModal = ref(false)
+
+    const abrirPestaña = () =>{
+
+      window.open(Photo_Url.value, '_blank')
+
+    }
+
+
+
+    const file2Base64 = (file:File):Promise<string> => {
+      return new Promise<string> ((resolve,reject)=> {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result?.toString() || '');
+          reader.onerror = error => reject(error);
+      })
+    }
+
+
+
+    const subirImagen = async()=>{
+
+      if(!codigo.value){
+        showError('Debe Seleccionar un empleado para actualizar la foto')
+        return
+      }
+
+      if(!photoModel.value) {
+        showError('Debe seleccionar un Archivo')
+        return
+      }
+      
+      const conf = await showAlertAsync('Confirmacion', `Desea Subir la Fotografia del empleado ${codigo.value} ?`,{})
+      
+      if(!conf) return
+
+       $q.loading.show({
+          delay: 100 // ms
+      })
+
+      const base64 = await file2Base64(photoModel.value)
+
+      await api.post(endPoints.EMPLEADOS + '/imagen', { 
+        'base64': base64,
+        'Id': codigo.value
+      }).then((resp)=>{
+
+        Photo_Url.value = resp.data.url
+        showSucces('Guardado Correctamente')
+
+      }).catch((ex)=>{
+        
+        showErrorEx(ex)
+
+      }).finally(()=>{
+        $q.loading.hide()
+      })
+
+  
+    }
 
 
     const getEmpleados = async()=>{
@@ -279,26 +394,9 @@ export default defineComponent({
       fechaNac.value = date.formatDate(row.fecha_nacimiento, 'YYYY-MM-DD');
       fechaInicio.value = date.formatDate(row.fechacontratacion, 'YYYY-MM-DD');
       fechaFin.value = date.formatDate(row.fechabaja, 'YYYY-MM-DD');
-
+      Photo_Url.value = row.photourl
     }
 
-    const findVend=()=>{
-      return
-      if (codigo.value!==null && codigo.value!.toString()!=='') {
-        var vend= empleados.value.find(val=>val.Codigo==codigo.value);
-        if (vend!==undefined) {
-
-          codigo.value=vend.Codigo;
-          nombre.value=vend.Nombre;
-          estado.value=vend.Estado=='A'?true:false;
-          pass.value=vend.Referencia;
-          estadoCivil.value=vend.Tipo;
-          //bodega.value=vend.Bodegas;
-          return;
-        }
-      }
-      clear();
-    }
 
     const clear=()=>{
       
@@ -318,10 +416,14 @@ export default defineComponent({
 
 
     return{
+      showModal,
+      abrirPestaña,
+      Photo_Url,
+      subirImagen,
+      photoModel,
       getEmpleados,
       onSubmit,
       selectUsuario,
-      findVend,
       clear,
       empleados,
       columns,
@@ -347,4 +449,5 @@ export default defineComponent({
     void this.getEmpleados();
   }
 });
+
 </script>

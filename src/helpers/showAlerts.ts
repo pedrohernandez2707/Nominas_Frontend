@@ -59,7 +59,7 @@ const showErrorEx = (
     }
     else if(ex.response.status!==200){
       msg=ex.response.status.toString();
-      msgEx=ex.response.statusText;
+      msgEx = `${(ex.response.data as any).mensaje}`;
     }
 
 
