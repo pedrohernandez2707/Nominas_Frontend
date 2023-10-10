@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHh Lpr lff">
     <q-header elevated>
       <q-toolbar
       class="bg-indigo text-white shadow-1 rounded-borders"
@@ -46,8 +46,9 @@
 
     <q-drawer
       v-model="leftDrawerOpen"
-      show-if-above
       bordered
+      :width="250"
+      overlay
     >
       <q-list>
         <q-item-label
@@ -100,7 +101,94 @@
             <q-item-label>Tienda / Ventas</q-item-label>
           </q-item-section>
         </q-item>
-       
+
+
+        <q-expansion-item
+          icon="badge"
+          label="Nominas"
+        >
+          <q-list class="q-pl-lg">
+
+            <q-item to="/periodos" active-class="q-item-no-link-highlighting">
+              <q-item-section avatar>
+                <q-icon name="calendar_month"/>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Periodos</q-item-label>
+              </q-item-section>
+            </q-item>
+
+            <q-expansion-item
+            icon="playlist_add"
+            label="Bonos y Extras"
+            >
+              <q-list class="q-pl-lg">
+
+                <q-item to="/horas" active-class="q-item-no-link-highlighting">
+                  <q-item-section avatar>
+                    <q-icon name="more_time"/>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>Horas Extras / Dobles</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item to="/comisiones" active-class="q-item-no-link-highlighting">
+                  <q-item-section avatar>
+                    <q-icon name="local_atm"/>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>Comisiones Empleado</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item to="/bonificaciones" active-class="q-item-no-link-highlighting">
+                  <q-item-section avatar>
+                    <q-icon name="add_card"/>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>Bonificaciones Empleado</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+              </q-list>
+
+            </q-expansion-item>
+            
+            <q-expansion-item
+              icon="person_remove"
+              label="Deducciones"
+            >
+              <q-list class="q-pl-lg">
+
+                 <q-item to="/dias" active-class="q-item-no-link-highlighting">
+                  <q-item-section avatar>
+                    <q-icon name="playlist_remove"/>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>Reporte dias Empleado</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                 <q-item to="/aportes" active-class="q-item-no-link-highlighting">
+                  <q-item-section avatar>
+                    <q-icon name="volunteer_activism"/>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>Aportes Solidarios</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+              </q-list>
+
+            </q-expansion-item>
+
+          </q-list>
+
+        </q-expansion-item>
+
+        <!-- Agregar otro -->
+
       </q-list>
     </q-drawer>
 

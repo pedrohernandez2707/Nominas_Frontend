@@ -13,44 +13,43 @@
         </div>
 
         <div class="col-xs-4 col-md-3 q-pr-md">
-          <q-input v-model="nombre" type="text" label="Nombre"
+          <q-input clearable v-model="nombre" type="text" label="Nombre"
             
-            :rules="[ val => val.length <= 40 || 'El nombre no puede ser mayor a 40 caracteres']"
+            :rules="[ val => val.length <= 80 || 'El nombre no puede ser mayor a 80 caracteres']"
           />
         </div>
         
         <div class="col-xs-4 col-md-3 q-pr-md">
-          <q-input v-model="apellido" type="text" label="Apellido"
+          <q-input clearable v-model="apellido" type="text" label="Apellido"
             
-            :rules="[ val => val.length <= 40 || 'El nombre no puede ser mayor a 40 caracteres']"
+            :rules="[ val => val.length <= 80 || 'El Apellido no puede ser mayor a 80 caracteres']"
           />
         </div>
 
          <div class="col-xs-3 col-md-3 q-pr-md">
-          <q-input v-model="telefono" type="text" label="Telefono"
+          <q-input clearable v-model="telefono" type="text" label="Telefono"
             
             :rules="[ val => val.length <= 40 || 'El nombre no puede ser mayor a 40 caracteres']"
           />
         </div>
 
            <div class="col-xs-3 col-md-3 q-pr-md">
-          <q-input v-model="direccion" type="text" label="Direccion"
+          <q-input clearable v-model="direccion" type="text" label="Direccion"
             
-            :rules="[ val => val.length <= 40 || 'El nombre no puede ser mayor a 40 caracteres']"
+            :rules="[ val => val.length <= 100 || 'La direccion no puede ser mayor a 100 caracteres']"
           />
         </div>
 
            <div class="col-xs-3 col-md-3 q-pr-md">
-          <q-input v-model="dpi" type="text" label="dpi"
+          <q-input clearable v-model="dpi" type="text" label="DPI"
             
-            :rules="[ val => val.length <= 40 || 'El nombre no puede ser mayor a 40 caracteres']"
+            :rules="[ val => val.length == 13 || 'El DPI debe ser de 13 caracteres']"
           />
         </div>
 
            <div class="col-xs-3 col-md-3 q-pr-md">
-          <q-input v-model="igss" type="text" label="afiliacion IGGS"
-            
-            :rules="[ val => val.length <= 40 || 'El nombre no puede ser mayor a 40 caracteres']"
+          <q-input clearable v-model="igss" type="text" label="Afiliacion IGGS"
+            :rules="[ val => val != null || 'Debe ingresar un Valor' ]"
           />
         </div>
 
@@ -59,25 +58,66 @@
         </div>
 
         <div class="col-xs-4 col-sm-2 col-md-2 q-pr-md" >
-            <q-input v-model="fechaNac" filled type="date" label="Fecha Nacimiento" />
+            <q-input v-model="fechaNac" filled type="date" label="Fecha Nacimiento" 
+              :rules="[ val => val != null || 'Debe ingresar un Valor' ]"
+            />
         </div>
 
         <div class="col-xs-4 col-sm-2 col-md-2 q-pr-md">
-            <q-input v-model="fechaInicio" filled type="date" label="Fecha Contratacion" />
+            <q-input v-model="fechaInicio" filled type="date" label="Fecha Contratacion" 
+              :rules="[ val => val != null || 'Debe ingresar un Valor' ]"
+            />
         </div>
 
         <div class="col-xs-4 col-sm-2 col-md-2 q-pr-md">
-            <q-input v-model="fechaFin" filled type="date" hint="Fecha Fin / Baja" />
+            <q-input v-model="fechaFin" filled type="date" label="Fecha Fin / Baja" 
+            />
         </div>
       <!-- </div> -->
       <!-- <div class="row"> -->
-        <q-select class="col-xs-12 col-sm-2 q-pr-md" v-model="estadoCivil" :options="estadosCiviles" label="Rol / Permiso" filled />
+        <q-select class="col-xs-12 col-sm-2 q-pr-md" v-model="estadoCivil" :options="estadosCiviles" label="Estado Civil" filled 
+          :rules="[ val => val != null || 'Debe ingresar un Valor' ]"
+        />
          
-        <q-input class="q-pa-xs col-sm-4 q-pr-md" v-model="email" type="email" label="Email"
+        <q-input clearable class="q-pa-xs col-sm-4 q-pr-md" v-model="email" type="email" label="Email"
           counter
+          :rules="[ val => val != null || 'Debe ingresar un Valor' ]"
         />
 
-        <q-file color="teal" filled v-model="photoModel" label="Subir Fotografia" accept=".jpg, .jpeg, .png, .bmp, .webp">
+        <q-input clearable v-model="Sueldo" type="number" label="Sueldo"
+          :rules="[ 
+            val => parseFloat(val) >= 0 || 'Debe Ingresar un valor mayor o igual a cero'
+          ]"
+        />
+
+        <q-select 
+        class="col-xs-12 col-sm-2 q-pr-md" 
+        v-model="departamento" 
+        :options="departamentos" 
+        label="Departamento" 
+        use-input
+        input-debounce="0"
+        @new-value="crearDepto"
+        clearable
+        filled 
+        :rules="[ val => val != null || 'Debe ingresar un Valor' ]"
+        />
+
+        <q-select 
+        class="col-xs-12 col-sm-2 q-pr-md" 
+        v-model="puesto" 
+        :options="puestos" 
+        label="Puesto" 
+        filled 
+        use-input
+        input-debounce="0"
+        @new-value="crearPuesto"
+        clearable
+        :rules="[ val => val != null || 'Debe ingresar un Valor' ]"
+        />
+
+
+        <q-file v-if="codigo" color="teal" filled v-model="photoModel" label="Subir Fotografia" accept=".jpg, .jpeg, .png, .bmp, .webp">
           <template v-slot:prepend>
             <q-icon name="cloud_upload"/>
           </template>
@@ -131,7 +171,7 @@
         <template v-slot:top-right>
           <q-input
             for="pos-buscar-detalles"
-            borderless dense v-model="filter" placeholder="Buscar Usuarios" clearable>
+            borderless dense v-model="filter" placeholder="Buscar Empleados" clearable>
             <template v-slot:append>
               <q-icon name="search" />
             </template>
@@ -151,7 +191,7 @@
 
 import { QTableProps, useQuasar, date } from 'quasar';
 import { api, endPoints } from 'src/boot/axios';
-import { showAlertAsync, showError, showErrorEx, showSucces } from 'src/helpers/showAlerts';
+import { showAlert, showAlertAsync, showError, showErrorEx, showSucces } from 'src/helpers/showAlerts';
 import { defineComponent, ref } from 'vue';
 import famModal from '../components/familiaresModal.vue'
 import docModal from '../components/documentosModal.vue'
@@ -228,6 +268,16 @@ export default defineComponent({
     const pass=ref('');
     const estadosCiviles=ref(['Soltero','Casado','Viudo','Divorciado','Unido']);
     const estadoCivil=ref('Soltero');
+
+    const departamentos=ref<any>([]);
+    const departamento=ref<any|null>(null);
+
+    const puestos=ref<any>([]);
+    const puesto=ref<any|null>(null);
+
+    const Sueldo = ref<number|null>(null);
+
+
     const photoModel = ref<any>(null)
     const filter = ref('');
     const empleados = ref<any[]>([]);
@@ -333,10 +383,9 @@ export default defineComponent({
         'FechaBaja': fechaFin.value === undefined ? null : fechaFin.value,
         'Estado': estado.value === true ? 'A' : 'I',
         'Photo_Url': null,
-        'Puesto': 1,
-        'Departamento': 1,
-        'Profesion': 1,
-        //'Bodegas': bods,
+        'Puesto': puesto.value.value,
+        'Departamento': departamento.value.value,
+        'Sueldo': Sueldo.value
       };
 
 
@@ -374,7 +423,6 @@ export default defineComponent({
         }).finally(()=>{
           $q.loading.hide()
         })
-
       }
       
     }
@@ -395,6 +443,9 @@ export default defineComponent({
       fechaInicio.value = date.formatDate(row.fechacontratacion, 'YYYY-MM-DD');
       fechaFin.value = date.formatDate(row.fechabaja, 'YYYY-MM-DD');
       Photo_Url.value = row.photourl
+      departamento.value = row.departamento
+      puesto.value = row.puesto
+      Sueldo.value = row.sueldo
     }
 
 
@@ -412,7 +463,80 @@ export default defineComponent({
       fechaNac.value = null;
       fechaInicio.value = null;
       fechaFin.value = null;
+      departamento.value = null;
+      Sueldo.value = null;
+      puesto.value = null
+      email.value = null
     }
+
+    const getPuestos = async()=>{
+
+      await api.get(endPoints.PUESTOS).then((resp)=>{        
+
+        puestos.value = resp.data
+
+      }).catch((ex)=>{
+        showErrorEx(ex)
+      })
+
+    }
+
+    const getDeptos = async()=>{
+
+      await api.get(endPoints.PUESTOS + '/deptos').then((resp)=>{        
+
+        departamentos.value = resp.data
+
+      }).catch((ex)=>{
+        showErrorEx(ex)
+      })
+
+    }
+
+
+    const crearPuesto = async(val)=>{
+
+      if (!val){
+        showAlert('Error', 'Debe Ingresar un Puesto', {})
+        return
+      }
+
+      await api.post(endPoints.PUESTOS, {
+        'nombre': val
+      }).then(async(resp)=>{
+        await getPuestos()
+
+        showSucces('Agregado Correctamente')
+
+      }).catch((ex)=>{
+        showErrorEx(ex)
+      })
+
+    }
+
+
+      const crearDepto = async(val)=>{
+
+      if (!val){
+        showAlert('Error', 'Debe Ingresar un Departamento', {})
+        return
+      }
+
+      await api.post(endPoints.PUESTOS + '/deptos', {
+        'nombre': val
+      }).then(async(resp)=>{
+        await getDeptos()
+
+        showSucces('Agregado Correctamente')
+
+      }).catch((ex)=>{
+        showErrorEx(ex)
+      })
+
+    }
+
+
+
 
 
     return{
@@ -442,11 +566,22 @@ export default defineComponent({
       igss,
       fechaNac,
       fechaInicio,
-      fechaFin
+      fechaFin,
+      departamento,
+      departamentos,
+      Sueldo,
+      puesto,
+      puestos,
+      getPuestos,
+      getDeptos,
+      crearPuesto,
+      crearDepto
     }
   },
   created(){
     void this.getEmpleados();
+    void this.getPuestos();
+    void this.getDeptos();
   }
 });
 

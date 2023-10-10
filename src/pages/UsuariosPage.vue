@@ -7,39 +7,46 @@
       @reset="clear"
     >
       <div class="row">
-        <div class="col-xs-3 col-md-2">
+        <div class="col-xs-3 col-md-2 q-pa-sm">
           <q-input v-model="codigo" type="number" label="Código" disable/>
         </div>
-        <div class="col-xs-9 col-md-5">
+        <div class="col-xs-9 col-md-5 q-pa-sm">
           <q-input v-model="nombre" type="text" label="Nombre"
             counter
             :rules="[ val => val.length <= 40 || 'El nombre no puede ser mayor a 40 caracteres']"
           />
         </div>
 
-        <div class="col-xs-9 col-md-5">
+        <div class="col-xs-9 col-md-5 q-pa-sm">
           <q-input v-model="apellido" type="text" label="Apellido"
             counter
-            :rules="[ val => val.length <= 40 || 'El nombre no puede ser mayor a 40 caracteres']"
+            :rules="[ val => val.length <= 40 || 'El apellido no puede ser mayor a 40 caracteres']"
           />
         </div>
       <!-- </div> -->
       <!-- <div class="row"> -->
-        <div class="col-xs-4 col-sm-2 col-md-2">
+        <div class="col-xs-4 col-sm-2 col-md-2 q-pa-sm">
           <q-toggle v-model="estado" color="green" label="Estado" left-label />
         </div>
-        <div class="col-xs-8 col-sm-10 col-md-3">
-          <q-input v-model="pass" type="text" label="Contraseña"
-            counter
-            :rules="[ val => val.length <= 15 || 'La contraseña no puede ser mayor a 15 caracteres']"
-          />
 
+        <div class="col-xs-8 col-sm-10 col-md-3 q-pa-sm">
+          <q-input  v-model="pass" type="text" label="Contraseña"
+            counter
+            :rules="[ val => val.length <= 15 || 'La contraseña no puede ser mayor a 15 caracteres',
+              val => val.length >= 6 || 'La contraseña debe ser mayor a 6 caracteres',]"
+            >
+
+          <template v-slot:append>
+            <q-btn v-if="codigo" round dense flat icon="save" @click="cambiarClave" />
+          </template>
+
+          </q-input>
         </div>
       <!-- </div> -->
       <!-- <div class="row"> -->
-        <q-select class="col-xs-12 col-sm-2" v-model="rol" :options="roles" label="Rol / Permiso" filled />
+        <q-select class="col-xs-12 col-sm-2 q-pa-sm" v-model="rol" :options="roles" label="Rol / Permiso" filled />
          
-        <q-input class="q-pa-xs col-sm-4" v-model="email" type="email" label="Email"
+        <q-input class="q-pa-xs col-sm-4 q-pa-sm" v-model="email" type="email" label="Email"
           counter
         />
       </div>
@@ -85,7 +92,7 @@
 <script lang="ts">
 import { exportFile, QTableProps, useQuasar } from 'quasar';
 import { api, endPoints } from 'src/boot/axios';
-import { showErrorEx, showSucces } from 'src/helpers/showAlerts';
+import { showAlertAsync, showErrorEx, showSucces } from 'src/helpers/showAlerts';
 import { defineComponent, ref } from 'vue';
 
 
@@ -194,6 +201,36 @@ export default defineComponent({
         }
       }
 
+    const cambiarClave = async()=>{
+
+      if(!codigo.value) return
+
+      if(!pass.value) return
+
+      const resp = await showAlertAsync('Confirmacion', 'Esta seguro de cambiar la clave al usuario?',{})
+
+      if(!resp) return
+
+      $q.loading.show({})
+
+      await api.post(endPoints.USUARIOS + '/clave',{
+        'id': codigo.value,
+        'clave': pass.value
+
+      }).then((resp)=>{
+
+        showSucces('Proceso Correcto')
+
+      }).catch((ex)=>{
+
+        showErrorEx(ex)
+      }).finally(()=>{
+
+        $q.loading.hide()
+      })
+
+    }
+
     const getUsuarios = async()=>{
 
       $q.loading.show({
@@ -222,9 +259,9 @@ export default defineComponent({
         'id':codigo.value ,
         'nombre': nombre.value,
         'apellido': apellido.value,
+        'contraseña': pass.value,
         'email': email.value,
         'activo': estado.value,
-        'contraseña': pass.value ,
         'rol': rol.value,
         //'Bodegas': bods,
       };
@@ -275,28 +312,10 @@ export default defineComponent({
       nombre.value = row.nombre;
       apellido.value = row.apellido
       estado.value = row.activo;
-      pass.value = row.contraseña;
       rol.value = row.rol;
       email.value = row.email;
     }
 
-    const findVend=()=>{
-      return
-      if (codigo.value!==null && codigo.value!.toString()!=='') {
-        var vend= usuarios.value.find(val=>val.Codigo==codigo.value);
-        if (vend!==undefined) {
-
-          codigo.value=vend.Codigo;
-          nombre.value=vend.Nombre;
-          estado.value=vend.Estado=='A'?true:false;
-          pass.value=vend.Referencia;
-          rol.value=vend.Tipo;
-          //bodega.value=vend.Bodegas;
-          return;
-        }
-      }
-      clear();
-    }
 
     const clear=()=>{
       
@@ -315,7 +334,6 @@ export default defineComponent({
       getUsuarios,
       onSubmit,
       selectUsuario,
-      findVend,
       clear,
       usuarios,
       columns,
@@ -327,10 +345,9 @@ export default defineComponent({
       roles,
       rol,
       email,
-      //bodegas,
-      //bodega,
       filter,
-      exportTable
+      exportTable,
+      cambiarClave
     }
   },
   created(){

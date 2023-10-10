@@ -54,7 +54,7 @@
       <template v-slot:top-right>
               <q-input
                 for="pos-buscar-detalles"
-                borderless dense v-model="filter" placeholder="Buscar Usuarios" clearable>
+                borderless dense v-model="filter" placeholder="Buscar Productos" clearable>
                 <template v-slot:append>
                   <q-icon name="search" />
                 </template>

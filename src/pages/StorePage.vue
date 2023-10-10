@@ -69,13 +69,12 @@
         :columns="columns"
         :filter="filter"
         :pagination="{ rowsPerPage: 0 }"
-        @row-click="selectUsuario"
       >
 
       <template v-slot:top-right>
         <q-input
           for="pos-buscar-detalles"
-          borderless dense v-model="filter" placeholder="Buscar Usuarios" clearable>
+          borderless dense v-model="filter" placeholder="Buscar Detalles" clearable>
           <template v-slot:append>
             <q-icon name="search" />
           </template>
@@ -117,7 +116,7 @@ const columns:QTableProps['columns']=[
   {
     name: 'Id_Producto',
     label:'Id_Producto',
-    field:'id_Producto',
+    field:'id_producto',
     align: 'center'
   },
   {
@@ -242,8 +241,7 @@ export default defineComponent({
     }
 
 
-   
-
+  
 
     const getEmpleados = async()=>{
       await api.get(endPoints.EMPLEADOS + '/combo').then((resp)=>{

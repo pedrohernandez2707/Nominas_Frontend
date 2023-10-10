@@ -59,8 +59,8 @@ api.interceptors.response.use(resp => {
   if (error.response && error.response.status === 401) {
     //const router = getRouter();
     removeToken();
-    void $router.push('/')
     showError('Sesión vencida, por favor ingrese sus credenciales nuevamente');
+    void $router.push('/')
     return Promise.reject(null);
   }
   return Promise.reject(error);
@@ -125,13 +125,20 @@ function configApi(
 
 
 enum endPoints {
-  EMPRESAS   = 'api/empresas',
-  LOGIN      = 'api/login',
-  USUARIOS   = 'api/usuarios',
-  EMPLEADOS  = 'api/empleados',
-  PRODUCTOS  = 'api/productos',
-  COMPRA_ENC = 'api/compraEnc',
-  COMPRA_DET = 'api/compraDet',
+  EMPRESAS       = 'api/empresas',
+  LOGIN          = 'api/login',
+  USUARIOS       = 'api/usuarios',
+  EMPLEADOS      = 'api/empleados',
+  PRODUCTOS      = 'api/productos',
+  COMPRA_ENC     = 'api/compraEnc',
+  COMPRA_DET     = 'api/compraDet',
+  PUESTOS        = 'api/puestos',
+  PERIODOS       = 'api/periodos',
+  HORAS          = 'api/horas',
+  COMISIONES     = 'api/comisiones',
+  BONIFICACIONES = 'api/bonificaciones',
+  REPORTE_DIAS   = 'api/dias',
+  APORTES        = 'api/aportes',
 }
 
 export { api, urlFront, endPoints, wsURL, configApi };
