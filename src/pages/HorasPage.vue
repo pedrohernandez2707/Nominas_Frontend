@@ -194,7 +194,7 @@ export default defineComponent({
           return
         }
         
-        periodoActivo.value = resp.data[0].periodo
+        periodoActivo.value = resp.data[0].id
     
       })
       .catch((ex)=>{

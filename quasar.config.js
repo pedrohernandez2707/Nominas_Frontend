@@ -149,7 +149,7 @@ module.exports = configure(function (ctx) {
       // chainWebpackCustomSW (/* chain */) {},
 
       manifest: {
-        name: 'Quasar App',
+        name: 'Nominas UMG App',
         short_name: 'Quasar App',
         description: '',
         display: 'standalone',

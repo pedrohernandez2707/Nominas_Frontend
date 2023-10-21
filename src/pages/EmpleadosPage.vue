@@ -9,7 +9,7 @@
       <div class="row">
 
         <div class="col-xs-2 col-md-2 q-pr-md">
-          <q-input v-model="codigo" type="number" label="Código" disable/>
+          <q-input  v-model="codigo" type="number" label="Código" disable/>
         </div>
 
         <div class="col-xs-4 col-md-3 q-pr-md">
@@ -79,12 +79,12 @@
           :rules="[ val => val != null || 'Debe ingresar un Valor' ]"
         />
          
-        <q-input clearable class="q-pa-xs col-sm-4 q-pr-md" v-model="email" type="email" label="Email"
+        <!-- <q-input clearable class="q-pa-xs col-sm-4 q-pr-md" v-model="email" type="email" label="Email"
           counter
           :rules="[ val => val != null || 'Debe ingresar un Valor' ]"
-        />
+        /> -->
 
-        <q-input clearable v-model="Sueldo" type="number" label="Sueldo"
+        <q-input class="q-pr-md" clearable v-model="Sueldo" type="number" label="Sueldo"
           :rules="[ 
             val => parseFloat(val) >= 0 || 'Debe Ingresar un valor mayor o igual a cero'
           ]"
@@ -217,12 +217,6 @@ const columns:QTableProps['columns']=[
     align: 'center'
   },
   {
-    name: 'Email',
-    label:'Email',
-    field:'email',
-    align: 'center'
-  },
-  {
     name: 'CUI',
     label:'CUI',
     field:'dpi',
@@ -258,7 +252,6 @@ export default defineComponent({
     const fechaNac=ref<string|null>(null);
     const fechaInicio=ref<string|null>(null);
     const fechaFin=ref<string|null>(null);
-    const email=ref<string|null>(null);
     const direccion=ref<string|null>(null);
     const telefono=ref<string|null>(null);
     const dpi=ref<string|null>(null);
@@ -466,7 +459,6 @@ export default defineComponent({
       departamento.value = null;
       Sueldo.value = null;
       puesto.value = null
-      email.value = null
     }
 
     const getPuestos = async()=>{
@@ -480,7 +472,7 @@ export default defineComponent({
       })
 
     }
-
+    
     const getDeptos = async()=>{
 
       await api.get(endPoints.PUESTOS + '/deptos').then((resp)=>{        
@@ -558,7 +550,6 @@ export default defineComponent({
       pass,
       estadosCiviles,
       estadoCivil,
-      email,
       filter,
       direccion,
       telefono,

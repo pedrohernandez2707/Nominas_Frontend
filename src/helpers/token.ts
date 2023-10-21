@@ -1,11 +1,12 @@
 
 
-const saveToken = (token:string, nombre:string, rol:string, email:string)=>{
+const saveToken = (token:string, nombre:string, rol:string, email:string, logo:string)=>{
 
     localStorage.setItem('authToken', token);
     localStorage.setItem('userName', nombre);
     localStorage.setItem('userRol', rol);
     localStorage.setItem('userEmail', email);
+    localStorage.setItem('logo', logo)
 }
 
 const getToken = ()=>{
@@ -23,6 +24,14 @@ const removeToken = ()=>{
     localStorage.removeItem('userName');
     localStorage.removeItem('userRol');
     localStorage.removeItem('userEmail');
+    localStorage.removeItem('logo');
 }
 
-export {saveToken, getToken, removeToken}
+const getLogo = ()=>{
+
+    const storedEmail = localStorage.getItem('logo');
+
+    return storedEmail;
+}
+
+export {saveToken, getToken, removeToken, getLogo}

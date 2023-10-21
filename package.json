@@ -2,7 +2,7 @@
   "name": "quasar-project",
   "version": "0.0.1",
   "description": "A Quasar Project",
-  "productName": "Quasar App",
+  "productName": "Nominas UMG App",
   "author": "Pedro2708 <phernandezg7@miumg.edu.gt>",
   "private": true,
   "scripts": {
@@ -17,6 +17,9 @@
     "axios": "^1.2.1",
     "bcryptjs": "^2.4.3",
     "core-js": "^3.6.5",
+    "fontkit": "^2.0.2",
+    "jszip": "^3.10.1",
+    "pdfmake": "^0.2.7",
     "quasar": "^2.6.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0"
@@ -29,7 +32,8 @@
     "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^9.0.0",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "workbox-webpack-plugin": "^7.0.0"
   },
   "browserslist": [
     "last 10 Chrome versions",

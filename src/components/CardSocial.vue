@@ -70,28 +70,28 @@ export default defineComponent({
         ]
         : [
           {
-            title: "Monthly Income",
-            icon: "fas fa-dollar-sign",
+            title: "Total de Ventas",
+            icon: "attach_money",
             value: "$ 20k",
             color1: "#546bfa",
             color2: "#3e51b5"
           },
           {
-            title: "Weekly Sales",
-            icon: "fas fa-chart-bar",
+            title: "Prestamos Realizados",
+            icon: "credit_score",
             value: "20",
             color1: "#3a9688",
             color2: "#3e51b5"
           },
           {
-            title: "New Customers",
+            title: "Nominas",
             icon: "fas fa-chart-line",
             value: "321",
             color1: "#7cb342",
             color2: "#3e51b5"
           },
           {
-            title: "Active Users",
+            title: "Empleados Registrados",
             icon: "person",
             value: "82",
             color1: "#f88c2b",

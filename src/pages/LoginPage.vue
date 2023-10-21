@@ -4,14 +4,22 @@
       <q-page class="flex bg-image flex-center">
         <q-card v-bind:style="$q.screen.lt.sm?{'width': '80%'}:{'width':'30%'}">
           <q-card-section>
-            <q-avatar size="103px" class="absolute-center">
-              <img src="../assets/login.png">
+            <q-avatar size="110px" class="absolute-center">
+              <!-- <img src="../assets/login.png"> -->
+               <q-img
+                v-if="Url"
+                :src="Url"
+                alt="Fotografia de Empleado"
+                style="max-width: 150px; height: 150px;"
+                fit="fill"
+              >
+               </q-img>
             </q-avatar>
           </q-card-section>
           <q-card-section>
             <div class="text-center q-pt-lg">
               <div class="col text-h6 ellipsis">
-                Log in
+                Inicio de Sesión
               </div>
             </div>
           </q-card-section>
@@ -25,6 +33,7 @@
               filled v-model="modelEmpresa" 
               :options="optionsEmpresa"
               :rules="[val => !!val || 'Campo obligatorio']"
+              @update:model-value="val =>{selectEmpresa(val)}"
               > 
 
             </q-select>
@@ -109,6 +118,8 @@ export default defineComponent({
       const loading = ref(false)
       const $router = useRouter()
       const isPwd = ref(true)
+      const Url = ref('')
+
 
       const getEmpresas = async()=>{
 
@@ -119,6 +130,14 @@ export default defineComponent({
       }).catch((ex)=>{
         showErrorEx(ex)
       })
+    }
+
+    const selectEmpresa = (val)=>{
+
+      if(!val) return
+
+      Url.value =  val.url;
+      
     }
 
     const onSubmit = ()=>{
@@ -143,7 +162,7 @@ export default defineComponent({
           return;
         }
 
-        saveToken(token, name, rol, username.value)
+        saveToken(token, name, rol, username.value, Url.value)
         loading.value = false
         void $router.push('/home');
 
@@ -163,7 +182,9 @@ export default defineComponent({
       modelEmpresa,
       onSubmit,
       loading,
-      isPwd
+      isPwd,
+      Url,
+      selectEmpresa
     }
   },
   created(){
@@ -174,8 +195,11 @@ export default defineComponent({
 
 <style>
 
+
 .bg-image {
-  background-image: linear-gradient(135deg, #7028e4 0%, #e5b2ca 100%);
-  /* background-color:indigo; */
+  background: linear-gradient(135deg, #000000 0%, #333333 100%);
+  /* Otros estilos de tu elección para el tema oscuro */
+  color: #ffffff; /* Cambiar el color del texto a blanco */
+  /* Agregar más estilos aquí si es necesario */
 }
 </style>

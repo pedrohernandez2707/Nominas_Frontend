@@ -7,8 +7,12 @@
     >
       <div class="row justify-evenly">
 
+        <div class="col-xs-1 col-md-1 q-pa-md">
+          <q-input v-model="periodoActivo" type="text" disable label="Periodo Activo" />
+        </div>
+
         <div class="col-xs-3 col-md-2">
-          <q-input v-model="codigo" type="number" label="Código" disable/>
+          <q-input v-model="codigo" type="number" label="Código de Compra" disable/>
         </div>
 
         <div class="col-xs-9 col-md-4">
@@ -89,8 +93,9 @@
 <script lang="ts">
 import { QTableProps, useQuasar } from 'quasar';
 import { api, endPoints } from 'src/boot/axios';
-import { showAlert, showErrorEx, showSucces } from 'src/helpers/showAlerts';
+import { showAlert, showError, showErrorEx, showSucces } from 'src/helpers/showAlerts';
 import { defineComponent, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 
 const columns:QTableProps['columns']=[
@@ -164,6 +169,12 @@ export default defineComponent({
     const optionsEmpleado = ref([])
     const modelEmpleado = ref<any>(null)
 
+    const periodoActivo = ref<any|null>(null)
+
+
+    const $router = useRouter()
+
+
     const setPrecio = (val)=>{
       precio.value = val.precio
     }
@@ -221,7 +232,8 @@ export default defineComponent({
 
       //var bods= bodega.value.map((val)=>parseInt(val.Codigo));
       let data={
-        'idEmpleado': modelEmpleado.value.value
+        'idEmpleado': modelEmpleado.value.value,
+        'idPeriodo': periodoActivo.value
       };
 
 
@@ -267,6 +279,35 @@ export default defineComponent({
     }
 
 
+
+    const getPeriodoActivo = async()=>{
+
+      $q.loading.show()
+
+      await api.get(endPoints.PERIODOS+ '/activo')
+      .then((resp)=>{
+
+        if(!resp.data[0]){
+          showError('Error', {subtitulo:'No existe un Periodo Activo, debe aperturar el periodo', timeout:10000})
+          $q.loading.hide()
+          $router.back()
+          return
+        }
+        
+        periodoActivo.value = resp.data[0].id
+    
+      })
+      .catch((ex)=>{
+
+        showErrorEx(ex)
+      }).finally(()=>{
+
+        $q.loading.hide()
+      })
+    }
+
+
+
     return{
       onSubmit,
       detalles,
@@ -282,12 +323,14 @@ export default defineComponent({
       modelProducto,
       modelEmpleado,
       filter,
-      agregarDetalle
+      agregarDetalle,
+      periodoActivo,
+      getPeriodoActivo
     }
   },
   created(){
     //void this.getUsuarios();
-    
+    void this.getPeriodoActivo();
     void this.getEmpleados();
     void this.getProductos();
   }

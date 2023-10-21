@@ -14,7 +14,7 @@
         />
 
         <q-toolbar-title>
-          Sistema de Nominas
+          Sistema de Nominas T Consulting, S.A.
         </q-toolbar-title>
 
         <div>
@@ -59,64 +59,76 @@
 
         <q-item to="/home" active-class="q-item-no-link-highlighting">
           <q-item-section avatar>
-            <q-icon name="dashboard"/>
+            <q-icon name="dashboard" color="white"/>
           </q-item-section>
           <q-item-section>
             <q-item-label>Dashboard</q-item-label>
           </q-item-section>
         </q-item>
 
+        <q-separator></q-separator>
+
          <q-item v-if="rol == 'Administrador'" to="/usuarios" active-class="q-item-no-link-highlighting">
           <q-item-section avatar>
-            <q-icon name="person_add"/>
+            <q-icon name="person_add" color="white"/>
           </q-item-section>
           <q-item-section>
             <q-item-label>Usuarios</q-item-label>
           </q-item-section>
         </q-item>
 
+        <q-separator></q-separator>
+
          <q-item v-if="rol != 'Colaborador'" to="/empleados" active-class="q-item-no-link-highlighting">
           <q-item-section avatar>
-            <q-icon name="supervised_user_circle"/>
+            <q-icon name="supervised_user_circle" color="white"/>
           </q-item-section>
           <q-item-section>
             <q-item-label>Empleados</q-item-label>
           </q-item-section>
         </q-item>
 
+        <q-separator></q-separator>
+
         <q-item v-if="rol != 'Colaborador'" to="/productos" active-class="q-item-no-link-highlighting">
           <q-item-section avatar>
-            <q-icon name="category"/>
+            <q-icon name="category" color="white"/>
           </q-item-section>
           <q-item-section>
             <q-item-label>Productos</q-item-label>
           </q-item-section>
         </q-item>
 
+        <q-separator></q-separator>
+
         <q-item v-if="rol != 'Colaborador'" to="/store" active-class="q-item-no-link-highlighting">
           <q-item-section avatar>
-            <q-icon name="local_grocery_store"/>
+            <q-icon name="local_grocery_store" color="white"/>
           </q-item-section>
           <q-item-section>
             <q-item-label>Tienda / Ventas</q-item-label>
           </q-item-section>
         </q-item>
 
+        <q-separator></q-separator>
 
         <q-expansion-item
           icon="badge"
           label="Nominas"
+          
         >
           <q-list class="q-pl-lg">
 
             <q-item to="/periodos" active-class="q-item-no-link-highlighting">
               <q-item-section avatar>
-                <q-icon name="calendar_month"/>
+                <q-icon name="calendar_month" color="white"/>
               </q-item-section>
               <q-item-section>
                 <q-item-label>Periodos</q-item-label>
               </q-item-section>
             </q-item>
+
+            <q-separator></q-separator>
 
             <q-expansion-item
             icon="playlist_add"
@@ -126,25 +138,30 @@
 
                 <q-item to="/horas" active-class="q-item-no-link-highlighting">
                   <q-item-section avatar>
-                    <q-icon name="more_time"/>
+                    <q-icon name="more_time" color="white"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Horas Extras / Dobles</q-item-label>
                   </q-item-section>
                 </q-item>
 
+                <q-separator></q-separator>
+
                 <q-item to="/comisiones" active-class="q-item-no-link-highlighting">
                   <q-item-section avatar>
-                    <q-icon name="local_atm"/>
+                    <q-icon name="local_atm" color="white"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Comisiones Empleado</q-item-label>
                   </q-item-section>
                 </q-item>
 
+                <q-separator></q-separator>
+
+
                 <q-item to="/bonificaciones" active-class="q-item-no-link-highlighting">
                   <q-item-section avatar>
-                    <q-icon name="add_card"/>
+                    <q-icon name="add_card" color="white"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Bonificaciones Empleado</q-item-label>
@@ -163,19 +180,31 @@
 
                  <q-item to="/dias" active-class="q-item-no-link-highlighting">
                   <q-item-section avatar>
-                    <q-icon name="playlist_remove"/>
+                    <q-icon name="playlist_remove" color="white"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Reporte dias Empleado</q-item-label>
                   </q-item-section>
                 </q-item>
 
+                <q-separator></q-separator>
+
                  <q-item to="/aportes" active-class="q-item-no-link-highlighting">
                   <q-item-section avatar>
-                    <q-icon name="volunteer_activism"/>
+                    <q-icon name="volunteer_activism" color="white"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Aportes Solidarios</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+
+                <q-item to="/prestamos" active-class="q-item-no-link-highlighting">
+                  <q-item-section avatar>
+                    <q-icon name="price_change" color="white"/>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>Prestamos Empleados</q-item-label>
                   </q-item-section>
                 </q-item>
 
@@ -195,7 +224,24 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <q-card class="q-mt-md row no-shadow" bordered>
+      <q-card-section class="col-12 row text-center q-pa-lg">
+        <div class="col-12 q-col-gutter-x-lg">
+          <a class="text-indigo-8 text-weight-bold" href="#/home" style="text-decoration: none">Dashboard</a>
+          <a class="text-indigo-8 text-weight-bold" href="#/empleados" style="text-decoration: none">Empleados</a>
+        </div>
+        <br/>
+        <div class="text-body1 col-12 q-mt-sm text-grey-8 text-weight-bold">
+          © 2023 Pedro Jose Hernandez, Proyecto Seminario Analisis.
+        </div>
+        
+      </q-card-section>
+    </q-card>
+
   </q-layout>
+
+ 
 </template>
 
 <script lang="ts">

@@ -139,6 +139,7 @@ enum endPoints {
   BONIFICACIONES = 'api/bonificaciones',
   REPORTE_DIAS   = 'api/dias',
   APORTES        = 'api/aportes',
+  NOMINA        = 'api/nomina',
 }
 
 export { api, urlFront, endPoints, wsURL, configApi };
